@@ -47,6 +47,15 @@
   .tipfire { animation: flick .22s ease-in-out infinite alternate; }
   @keyframes flick { from { opacity: .6; } to { opacity: 1; } }
 
+  /* ================= FULL-SCREEN PAGES ================= */
+  .page { position: relative; height: var(--vh, 100vh); overflow: hidden; padding-bottom: env(safe-area-inset-bottom, 0px); }
+  .fit { display: flex; flex-direction: column; height: 100%; }
+  #page1 .greeting { flex: 1 1 auto; display: flex; flex-direction: column; justify-content: center; }
+  #page1 .blessing { flex: 1.25 1 auto; display: flex; flex-direction: column; justify-content: center; }
+  #page2 .apta { flex: 1.2 1 auto; display: flex; flex-direction: column; justify-content: center; }
+  #page2 .names { flex: 0 0 auto; }
+  #page2 .hint { flex: 0.5 1 auto; display: flex; align-items: center; justify-content: center; }
+
   /* ================= TEXT ================= */
   .greeting { padding: 28px 22px 4px; text-align: center; }
   .title {
@@ -93,6 +102,10 @@
   @keyframes dR { 0%,38% { transform: rotate(0); } 44%,60% { transform: rotate(-75deg); } 68%,100% { transform: rotate(0); } }
   @keyframes spark { 0%,12% { opacity: 0; transform: translateY(0); } 17% { opacity: 1; } 36%,100% { opacity: 0; transform: translateY(-20px); } }
   @keyframes nod { 0%,100% { transform: rotate(0); } 50% { transform: rotate(6deg); } }
+  .bend  { transform-origin: 0 0; animation: bendT 6s ease-in-out infinite; }
+  .hbend { transform-origin: 0 0; animation: bendH 6s ease-in-out infinite; }
+  @keyframes bendT { 0%,4% { transform: none; } 14%,24% { transform: scale(1.035, .84); } 34%,100% { transform: none; } }
+  @keyframes bendH { 0%,4% { transform: none; } 14%,24% { transform: translateY(6px) scale(1, .94); } 34%,100% { transform: none; } }
   @keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(1.2px); } }
 
   /* ================= APTA ================= */
@@ -104,16 +117,16 @@
 
   /* ================= NAMES ================= */
   .names {
-    margin: 26px 18px 0; padding: 22px 16px 24px; text-align: center;
+    margin: 8px 18px 0; padding: 22px 16px 24px; text-align: center;
     border: 1px solid rgba(247,201,72,.55); outline: 1px solid rgba(247,201,72,.25); outline-offset: 4px;
     border-radius: 6px; background: rgba(26,10,44,.55);
   }
   .names h2 { margin: 0 0 12px; font-family: "Yatra One", "Hind", serif; font-weight: 400; font-size: 26px; color: var(--gold); }
-  .names p { margin: 0; font-size: 18px; line-height: 1.5; font-weight: 500; }
+  .names p { margin: 0; font-size: clamp(17px, 2.6vh, 21px); line-height: 1.5; font-weight: 500; }
   .names p + p { margin-top: 14px; }
   .names .kids-label { margin-top: 22px; font-family: "Yatra One", "Hind", serif; font-size: 21px; color: var(--saffron); font-weight: 400; }
   .names .kids-label + p { margin-top: 6px; }
-  .hint { margin: 26px 0 0; padding: 0 0 30px; text-align: center; font-size: 14px; color: #c9a98e; }
+  .hint { margin: 0; padding: 0 0 6px; text-align: center; font-size: 14px; color: #c9a98e; }
 
 
   /* ================= PLAY STATE: nothing moves until the envelope is opened ================= */
@@ -209,6 +222,7 @@
     .arm.dL { animation: none; transform: rotate(75deg); }
     .arm.dR { animation: none; transform: rotate(-75deg); }
     .spark { animation: none; opacity: 1; }
+    .bend, .hbend { animation: none; }
   }
 </style>
 </head>
@@ -245,6 +259,7 @@
   <div class="petals" id="petals" aria-hidden="true"></div>
   <canvas id="fx" aria-hidden="true"></canvas>
 
+  <section class="page" id="page1"><div class="fit">
   <section class="greeting">
     <h1 class="title">दशहरा</h1>
     <p class="sub">विजयादशमी की हार्दिक शुभकामनाएँ</p>
@@ -254,10 +269,12 @@
 
   <section class="blessing" id="blessingSec">
     <h3>दादी का आशीर्वाद, सबको प्रणाम</h3>
-    <svg id="bless" viewBox="0 0 400 252" role="img" aria-label="स्वरा, वरद और मुग्धा दादी के चरण स्पर्श करते हुए, दोनों तरफ़ जोड़े नमस्कार की मुद्रा में"></svg>
+    <svg id="bless" viewBox="0 30 400 222" role="img" aria-label="स्वरा, वरद और मुग्धा दादी के चरण स्पर्श करते हुए, दोनों तरफ़ जोड़े नमस्कार की मुद्रा में"></svg>
     <p class="cap">बड़ों का आशीर्वाद ही सबसे बड़ा उपहार है।</p>
   </section>
+  </div></section>
 
+  <section class="page" id="page2"><div class="fit">
   <section class="apta">
     <svg id="apta" viewBox="0 0 400 190" role="img" aria-label="आपट्याची पाने, गेंदे के फूल और कुमकुम"></svg>
     <p class="sona">सोनं घ्या, सोन्यासारखं रहा!</p>
@@ -273,7 +290,7 @@
   </section>
 
   <p class="hint">आतिशबाज़ी के लिए स्क्रीन को छुएँ ✨</p>
-  <div id="tail" style="height:24px"></div>
+  </div></section>
 </main>
 
 <div id="bye" aria-live="polite">
@@ -353,56 +370,60 @@ function dadi(x, G, s) {
 function adult(o) {
   var s = o.s, sk = o.skin, saree = o.kind === 'saree';
   var sleeve = saree ? o.blouse : o.color;
-  var h = '<g transform="translate(' + o.x + ',' + o.G + ') scale(' + s + ')">';
-  h += shadow(24);
+  var piv = saree ? -38 : -24;           /* waist: the upper body bends forward from here */
+  var low = shadow(24), up = '';
   if (saree) {
-    h += '<ellipse cx="-6.5" cy="-1" rx="5" ry="2.3" fill="#2a1a14"/><ellipse cx="6.5" cy="-1" rx="5" ry="2.3" fill="#2a1a14"/>';
-    h += shaded('M-12.5 -38 L12.5 -38 L15.5 -3 L-15.5 -3 Z', o.color);
+    low += '<ellipse cx="-6.5" cy="-1" rx="5" ry="2.3" fill="#2a1a14"/><ellipse cx="6.5" cy="-1" rx="5" ry="2.3" fill="#2a1a14"/>';
+    low += shaded('M-12.5 -38 L12.5 -38 L15.5 -3 L-15.5 -3 Z', o.color);
     [[-8,-32],[2,-33],[9,-28],[-4,-26],[-10,-21],[5,-21],[11,-15],[-2,-16],[-9,-11],[6,-10],[-1,-6]].forEach(function (p) {
-      h += '<circle cx="' + p[0] + '" cy="' + p[1] + '" r="1.3" fill="' + o.color2 + '" opacity=".85"/>';
+      low += '<circle cx="' + p[0] + '" cy="' + p[1] + '" r="1.3" fill="' + o.color2 + '" opacity=".85"/>';
     });
-    h += '<rect x="-16" y="-8" width="32" height="5" fill="' + o.color2 + '"/><rect x="-16" y="-6.4" width="32" height="1" fill="#000" opacity=".25"/>';
-    h += shaded('M-11.5 -52 L11.5 -52 L12.2 -37 L-12.2 -37 Z', o.blouse);
-    h += shaded('M-12 -52.5 L-2 -52.5 L14.5 -35 L13 -23 L5 -29 Z', o.color);
-    h += '<path d="M-2 -52.5 L14.5 -35 L13 -23" fill="none" stroke="' + o.color2 + '" stroke-width="3.2" stroke-linejoin="round"/>';
+    low += '<rect x="-16" y="-8" width="32" height="5" fill="' + o.color2 + '"/><rect x="-16" y="-6.4" width="32" height="1" fill="#000" opacity=".25"/>';
+    up += shaded('M-11.5 -52 L11.5 -52 L12.2 -37 L-12.2 -37 Z', o.blouse);
+    up += shaded('M-12 -52.5 L-2 -52.5 L14.5 -35 L13 -23 L5 -29 Z', o.color);
+    up += '<path d="M-2 -52.5 L14.5 -35 L13 -23" fill="none" stroke="' + o.color2 + '" stroke-width="3.2" stroke-linejoin="round"/>';
   } else {
-    h += '<rect x="-9.5" y="-26" width="7.4" height="25" rx="2" fill="#f4ead5"/><rect x="2.1" y="-26" width="7.4" height="25" rx="2" fill="#f4ead5"/>';
-    h += '<rect x="-9.5" y="-26" width="19" height="25" fill="url(#bsh)" opacity=".5"/>';
-    h += '<ellipse cx="-6" cy="-1.6" rx="5.5" ry="2.3" fill="#4a2c20"/><ellipse cx="6" cy="-1.6" rx="5.5" ry="2.3" fill="#4a2c20"/>';
-    h += shaded('M-12.5 -50 L12.5 -50 L14.6 -20 L-14.6 -20 Z', o.color);
-    h += '<path d="M-3.2 -50 L0 -44 L3.2 -50 Z" fill="' + sk + '"/><path d="M0 -44 L0 -21" stroke="#000" stroke-width=".6" opacity=".25"/>';
-    h += '<circle cx="0.1" cy="-41" r=".9" fill="#e2b457"/><circle cx="0.1" cy="-35" r=".9" fill="#e2b457"/><circle cx="0.1" cy="-29" r=".9" fill="#e2b457"/>';
+    low += '<rect x="-9.5" y="-26" width="7.4" height="25" rx="2" fill="#f4ead5"/><rect x="2.1" y="-26" width="7.4" height="25" rx="2" fill="#f4ead5"/>';
+    low += '<rect x="-9.5" y="-26" width="19" height="25" fill="url(#bsh)" opacity=".5"/>';
+    low += '<ellipse cx="-6" cy="-1.6" rx="5.5" ry="2.3" fill="#4a2c20"/><ellipse cx="6" cy="-1.6" rx="5.5" ry="2.3" fill="#4a2c20"/>';
+    up += shaded('M-12.5 -50 L12.5 -50 L14.6 -20 L-14.6 -20 Z', o.color);
+    up += '<path d="M-3.2 -50 L0 -44 L3.2 -50 Z" fill="' + sk + '"/><path d="M0 -44 L0 -21" stroke="#000" stroke-width=".6" opacity=".25"/>';
+    up += '<circle cx="0.1" cy="-41" r=".9" fill="#e2b457"/><circle cx="0.1" cy="-35" r=".9" fill="#e2b457"/><circle cx="0.1" cy="-29" r=".9" fill="#e2b457"/>';
   }
-  var cuff = saree ? o.color2 : '#d9b25a';
-  h += '<g class="hands" style="animation-delay:' + (o.n || 0) + 's">';
+  up += '<g class="hands" style="animation-delay:' + (o.n || 0) + 's">';
   [-1, 1].forEach(function (d) {
-    h += '<path d="M' + (d * 11.5) + ' -48 L' + (d * 17) + ' -35.5 L' + (d * 1.8) + ' -42" fill="none" stroke="' + sleeve + '" stroke-width="6.6" stroke-linecap="round" stroke-linejoin="round"/>';
-    h += '<path d="M' + (d * 5) + ' -40 L' + (d * 1.8) + ' -42" fill="none" stroke="' + sk + '" stroke-width="5.2" stroke-linecap="round"/>';
-    if (saree) h += '<path d="M' + (d * 7.2) + ' -38.4 L' + (d * 4.2) + ' -40.2" stroke="#f2c94c" stroke-width="1.8"/>';
+    up += '<path d="M' + (d * 11.5) + ' -48 L' + (d * 17) + ' -35.5 L' + (d * 1.8) + ' -42" fill="none" stroke="' + sleeve + '" stroke-width="6.6" stroke-linecap="round" stroke-linejoin="round"/>';
+    up += '<path d="M' + (d * 5) + ' -40 L' + (d * 1.8) + ' -42" fill="none" stroke="' + sk + '" stroke-width="5.2" stroke-linecap="round"/>';
+    if (saree) up += '<path d="M' + (d * 7.2) + ' -38.4 L' + (d * 4.2) + ' -40.2" stroke="#f2c94c" stroke-width="1.8"/>';
   });
-  h += '<ellipse cx="0" cy="-43.5" rx="3.5" ry="4.6" fill="' + sk + '"/><path d="M0 -47.6 L0 -39.6" stroke="#6a3d22" stroke-width=".5" opacity=".6"/></g>';
-  /* head (wrapped so the nod pivots at the neck without transform-origin) */
-  h += '<g transform="translate(0,-55)"><g class="nod" style="animation-delay:' + (o.n || 0) + 's"><g transform="translate(0,55)">';
-  h += '<rect x="-2.8" y="-56" width="5.6" height="7" fill="#b87d52" opacity=".9"/>';
-  if (saree && o.bun) h += '<circle cx="0" cy="-73" r="4.6" fill="' + o.hair + '"/><circle cx="0" cy="-73" r="4.6" fill="url(#hl)" opacity=".25"/>';
-  h += ell(-9.2, -61.5, 1.6, 2.6, sk) + ell(9.2, -61.5, 1.6, 2.6, sk);
-  if (saree) h += '<circle cx="-9.6" cy="-58.4" r="1" fill="#f2c94c"/><circle cx="9.6" cy="-58.4" r="1" fill="#f2c94c"/><circle cx="-9.6" cy="-56.8" r=".7" fill="#e8452c"/><circle cx="9.6" cy="-56.8" r=".7" fill="#e8452c"/>';
-  h += ell(0, -62, 9, 10, sk);
-  h += '<path d="M-9.4 -62 C-10.4 -75.5 10.4 -75.5 9.4 -62 C8 -66.4 4 -69.4 -1 -69.8 C-5 -69.3 -8 -66.4 -9.4 -62 Z" fill="' + o.hair + '"/>';
-  h += '<path d="M-3 -70 C-5 -68.6 -7 -66.6 -8.4 -63.6" fill="none" stroke="#fff" stroke-width=".5" opacity=".18"/>';
-  if (saree) h += '<path d="M0 -70 L0 -66.4" stroke="#000" stroke-width=".7" opacity=".35"/>';
-  h += '<ellipse cx="-3.8" cy="-62.6" rx="1.8" ry="1.15" fill="#fff"/><ellipse cx="3.8" cy="-62.6" rx="1.8" ry="1.15" fill="#fff"/>';
-  h += '<circle cx="-3.8" cy="-62.5" r="1" fill="#2a1713"/><circle cx="3.8" cy="-62.5" r="1" fill="#2a1713"/>';
-  h += '<path d="M-5.8 -63.8 Q-3.8 -65 -1.8 -63.8 M1.8 -63.8 Q3.8 -65 5.8 -63.8" fill="none" stroke="#1a0f0c" stroke-width=".7" stroke-linecap="round"/>';
-  h += '<path d="M-6.6 -66.2 Q-4 -67.6 -1.6 -66.4 M1.6 -66.4 Q4 -67.6 6.6 -66.2" fill="none" stroke="#1a0f0c" stroke-width=".9" stroke-linecap="round"/>';
-  h += '<path d="M-1.1 -61.4 Q-1.9 -58.4 0 -57.7 Q1.9 -58.4 1.1 -61.4" fill="none" stroke="#9b6038" stroke-width=".6" stroke-linecap="round"/>';
-  h += '<path d="M-3.4 -54.2 Q0 -51.8 3.4 -54.2" fill="none" stroke="#8a3b3b" stroke-width="1.2" stroke-linecap="round"/>';
-  h += '<circle cx="-5.6" cy="-56.6" r="2" fill="#e08a7a" opacity=".22"/><circle cx="5.6" cy="-56.6" r="2" fill="#e08a7a" opacity=".22"/>';
+  up += '<ellipse cx="0" cy="-43.5" rx="3.5" ry="4.6" fill="' + sk + '"/><path d="M0 -47.6 L0 -39.6" stroke="#6a3d22" stroke-width=".5" opacity=".6"/></g>';
+
+  var hd = '<rect x="-2.8" y="-56" width="5.6" height="7" fill="#b87d52" opacity=".9"/>';
+  if (saree && o.bun) hd += '<circle cx="0" cy="-73" r="4.6" fill="' + o.hair + '"/><circle cx="0" cy="-73" r="4.6" fill="url(#hl)" opacity=".25"/>';
+  hd += ell(-9.2, -61.5, 1.6, 2.6, sk) + ell(9.2, -61.5, 1.6, 2.6, sk);
+  if (saree) hd += '<circle cx="-9.6" cy="-58.4" r="1" fill="#f2c94c"/><circle cx="9.6" cy="-58.4" r="1" fill="#f2c94c"/><circle cx="-9.6" cy="-56.8" r=".7" fill="#e8452c"/><circle cx="9.6" cy="-56.8" r=".7" fill="#e8452c"/>';
+  hd += ell(0, -62, 9, 10, sk);
+  hd += '<path d="M-9.4 -62 C-10.4 -75.5 10.4 -75.5 9.4 -62 C8 -66.4 4 -69.4 -1 -69.8 C-5 -69.3 -8 -66.4 -9.4 -62 Z" fill="' + o.hair + '"/>';
+  hd += '<path d="M-3 -70 C-5 -68.6 -7 -66.6 -8.4 -63.6" fill="none" stroke="#fff" stroke-width=".5" opacity=".18"/>';
+  if (saree) hd += '<path d="M0 -70 L0 -66.4" stroke="#000" stroke-width=".7" opacity=".35"/>';
+  hd += '<ellipse cx="-3.8" cy="-62.6" rx="1.8" ry="1.15" fill="#fff"/><ellipse cx="3.8" cy="-62.6" rx="1.8" ry="1.15" fill="#fff"/>';
+  hd += '<circle cx="-3.8" cy="-62.5" r="1" fill="#2a1713"/><circle cx="3.8" cy="-62.5" r="1" fill="#2a1713"/>';
+  hd += '<path d="M-5.8 -63.8 Q-3.8 -65 -1.8 -63.8 M1.8 -63.8 Q3.8 -65 5.8 -63.8" fill="none" stroke="#1a0f0c" stroke-width=".7" stroke-linecap="round"/>';
+  hd += '<path d="M-6.6 -66.2 Q-4 -67.6 -1.6 -66.4 M1.6 -66.4 Q4 -67.6 6.6 -66.2" fill="none" stroke="#1a0f0c" stroke-width=".9" stroke-linecap="round"/>';
+  hd += '<path d="M-1.1 -61.4 Q-1.9 -58.4 0 -57.7 Q1.9 -58.4 1.1 -61.4" fill="none" stroke="#9b6038" stroke-width=".6" stroke-linecap="round"/>';
+  hd += '<path d="M-3.4 -54.2 Q0 -51.8 3.4 -54.2" fill="none" stroke="#8a3b3b" stroke-width="1.2" stroke-linecap="round"/>';
+  hd += '<circle cx="-5.6" cy="-56.6" r="2" fill="#e08a7a" opacity=".22"/><circle cx="5.6" cy="-56.6" r="2" fill="#e08a7a" opacity=".22"/>';
   if (saree) {
-    h += '<circle cx="0" cy="-67.4" r="1.15" fill="#d62828"/>';
-    h += '<path d="M-5 -51.5 Q0 -44.5 5 -51.5" fill="none" stroke="#e2b457" stroke-width=".8"/><path d="M-4 -51.5 Q0 -42 4 -51.5" fill="none" stroke="#2a1a14" stroke-width="1.1" stroke-dasharray="1.1 .8"/>';
+    hd += '<circle cx="0" cy="-67.4" r="1.15" fill="#d62828"/>';
+    hd += '<path d="M-5 -51.5 Q0 -44.5 5 -51.5" fill="none" stroke="#e2b457" stroke-width=".8"/><path d="M-4 -51.5 Q0 -42 4 -51.5" fill="none" stroke="#2a1a14" stroke-width="1.1" stroke-dasharray="1.1 .8"/>';
   }
-  return h + '</g></g></g></g>';
+
+  var bd = (o.bd || 0) + 's';
+  /* upper body bends forward at the waist; the head dips with it (wrappers use translate only, so no transform-origin needed) */
+  return '<g transform="translate(' + o.x + ',' + o.G + ') scale(' + s + ')">' + low +
+         '<g transform="translate(0,' + piv + ')"><g class="bend" style="animation-delay:' + bd + '"><g transform="translate(0,' + (-piv) + ')">' + up + '</g></g></g>' +
+         '<g transform="translate(0,-55)"><g class="hbend" style="animation-delay:' + bd + '"><g transform="translate(0,55)">' + hd + '</g></g></g>' +
+         '</g>';
 }
 
 /* ---------- kids: 3/4 head turned to the right ---------- */
@@ -511,10 +532,10 @@ function familyScene() {
 
   /* adults: tallest in the scene (Prafulla, Mayuri | Aayushi, Shashikant) */
   var adults = [
-    { x: 44,  s: 1.9,  kind: 'kurta', color: '#f6ecd0', skin: skinB, hair: '#1b0f12', n: 0 },
-    { x: 98,  s: 1.75, kind: 'saree', color: '#1f8a8a', color2: '#f7c948', blouse: '#c43b22', skin: skinA, hair: '#1b0f12', bun: true, n: .4 },
-    { x: 302, s: 1.75, kind: 'saree', color: '#6b3fa0', color2: '#f7c948', blouse: '#e8a33d', skin: skinA, hair: '#1b0f12', bun: true, n: .2 },
-    { x: 356, s: 1.9,  kind: 'kurta', color: '#ff9a2e', skin: skinB, hair: '#1b0f12', n: .6 }
+    { x: 44,  s: 1.9,  kind: 'kurta', color: '#f6ecd0', skin: skinB, hair: '#1b0f12', n: 0, bd: .2 },
+    { x: 98,  s: 1.75, kind: 'saree', color: '#1f8a8a', color2: '#f7c948', blouse: '#c43b22', skin: skinA, hair: '#1b0f12', bun: true, n: .4, bd: .2 },
+    { x: 302, s: 1.75, kind: 'saree', color: '#6b3fa0', color2: '#f7c948', blouse: '#e8a33d', skin: skinA, hair: '#1b0f12', bun: true, n: .2, bd: 3.2 },
+    { x: 356, s: 1.9,  kind: 'kurta', color: '#ff9a2e', skin: skinB, hair: '#1b0f12', n: .6, bd: 3.2 }
   ];
   adults.forEach(function (a) { a.G = G; out += adult(a); });
 
@@ -988,20 +1009,31 @@ function startHero(reduce) {
     window.addEventListener(ev, function () { cancelled = true; }, { passive: true });
   });
   function topOf(sel) { return document.querySelector(sel).getBoundingClientRect().top + window.pageYOffset; }
-  function botOf(sel) { return document.querySelector(sel).getBoundingClientRect().bottom + window.pageYOffset; }
   function ease(p) { return p < .5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2; }
-  function fitTail() {
-    var tail = document.getElementById('tail');
-    tail.style.height = '24px';
-    var need = topOf('.apta') - 10 + window.innerHeight, have = document.documentElement.scrollHeight;
-    if (need > have) tail.style.height = (24 + need - have) + 'px';
+  function fitPages() {
+    var vh = window.innerHeight;
+    document.documentElement.style.setProperty('--vh', vh + 'px');
+    var fits = document.querySelectorAll('.fit');
+    for (var i = 0; i < fits.length; i++) {
+      var f = fits[i];
+      f.style.transform = '';
+      if (f.scrollHeight > f.clientHeight + 1) {      /* content taller than the screen: shrink it to fit */
+        f.style.transformOrigin = '50% 0';
+        f.style.transform = 'scale(' + (f.clientHeight / f.scrollHeight).toFixed(3) + ')';
+      }
+    }
   }
+  window.addEventListener('resize', fitPages);
+  window.addEventListener('orientationchange', function () { setTimeout(fitPages, 300); });
+  fitPages();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitPages);
+
   function startAutoScroll() {
     cancelled = false;
-    var TL = [[0, 'top'], [7.6, 'top'], [9.0, 'p1'], [13.0, 'p1'], [14.3, 'p2'], [21.0, 'p2']];
+    var TL = [[0, 'top'], [12.8, 'top'], [13.9, 'p2'], [21.0, 'p2']];
     function maxY() { return Math.max(0, document.documentElement.scrollHeight - window.innerHeight); }
     function Y(k) {
-      var y = k === 'top' ? 0 : k === 'p1' ? botOf('.blessing') + 10 - window.innerHeight : topOf('.apta') - 10;
+      var y = k === 'top' ? 0 : topOf('#page2');
       return Math.min(Math.max(0, y), maxY());
     }
     (function step() {
@@ -1066,7 +1098,7 @@ function startHero(reduce) {
       sndBtn.classList.add('show');
       cover.classList.add('gone');
       if (!reduce) {
-        fitTail();
+        fitPages();
         startAutoScroll();
         setTimeout(closeCard, Math.max(0, 21000 - (performance.now() - tTap)));
       }
